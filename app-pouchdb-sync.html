@@ -20,7 +20,7 @@ and a remote one:
 
 ```html
 <app-pouchdb-sync
-    src="cats"
+    source="cats"
     target="https://example.com:5678/cats"
     bidirectional>
 </app-pouchdb-sync>
@@ -39,22 +39,22 @@ documentation [here](https://pouchdb.com/guides/replication.html).
       properties: {
         /**
          * The source to sync from. If this sync is `bidirectional`, then the
-         * `src` and `target` values are interchangeable.
+         * `source` and `target` values are interchangeable.
          */
-        src: {
+        source: {
           type: String
         },
 
         /**
          * The `target` to sync to. If this sync is `bidirectional`, then the
-         * `src` and `target` values are interchangeable.
+         * `source` and `target` values are interchangeable.
          */
         target: {
           type: String
         },
 
         /**
-         * While `false`, synchronization will only happen from the `src` to the
+         * While `false`, synchronization will only happen from the `source` to the
          * `target`. One-directional synchronization follows the semantics of
          * `PouchDB.replicate`. Set to `true` to make the sync bidirectional,
          * which uses `PouchDB.sync` instead.
@@ -70,7 +70,7 @@ documentation [here](https://pouchdb.com/guides/replication.html).
          */
         sync: {
           type: Object,
-          computed: '__computeSync(src, target, bidirectional)',
+          computed: '__computeSync(source, target, bidirectional)',
           observer: '__syncChanged'
         },
 
@@ -84,14 +84,14 @@ documentation [here](https://pouchdb.com/guides/replication.html).
         }
       },
 
-      __computeSync: function(src, target, bidirectional) {
+      __computeSync: function(source, target, bidirectional) {
         var options = {
           live: true,
           retry: true
         }
         return bidirectional ?
-          PouchDB.sync(src, target, options) :
-          PouchDB.replicate(src, target, options);
+          PouchDB.sync(source, target, options) :
+          PouchDB.replicate(source, target, options);
       },
 
       __syncChanged: function(sync, oldSync) {
